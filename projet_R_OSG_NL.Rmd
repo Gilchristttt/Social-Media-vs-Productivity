@@ -1,0 +1,86 @@
+---
+title: "Projet R : Réseaux sociaux et productivité"
+author: "OUEDRAOGO S. Gilchrist & Nelson LANDEHOUE"
+date: "13 octobre 2026"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+    latex_engine: xelatex
+lang: fr
+fontsize: 11pt
+geometry: margin=2.5cm
+---
+
+# Bibliothèques et environnement de travail
+
+```{r packages, echo=TRUE, message=FALSE, warning=FALSE}
+if (!requireNamespace("pacman", quietly = TRUE)) {
+  install.packages("pacman")
+}
+p_load <- pacman::p_load
+p_load("tidyverse")
+p_load("knitr")
+p_load("kableExtra")
+p_load("dplyr")
+
+```
+
+# Introduction
+
+## Contexte et motivation
+
+L'omniprésence des technologies numériques a profondément transformé les habitudes de communication, les modes de travail et l'organisation du temps quotidien. Les réseaux sociaux occupent désormais une place importante dans la vie personnelle et professionnelle, offrant des possibilités d'échange et d'accès à l'information, mais pouvant également favoriser les interruptions fréquentes et la fragmentation de l'attention.
+
+Dans ce contexte, la relation entre les usages numériques et la productivité constitue un sujet d'intérêt, tant sur le plan individuel que professionnel. Le temps consacré aux réseaux sociaux, la fréquence des notifications et l'utilisation des écrans avant le sommeil pourraient être associés à différentes dimensions du fonctionnement quotidien, notamment la productivité, le stress, la qualité du sommeil et le bien-être au travail.
+
+Toutefois, cette relation est susceptible d'être complexe. Les habitudes numériques ne constituent pas nécessairement un facteur défavorable dans toutes les situations : leurs effets potentiels peuvent varier selon les caractéristiques individuelles, le contexte professionnel et les stratégies mises en place pour gérer les distractions. Il convient donc d'étudier ces relations empiriquement, sans présupposer l'existence d'un effet systématiquement négatif.
+
+## Problématique et objectifs
+
+Ce projet vise à étudier les relations entre les habitudes d'utilisation des réseaux sociaux et la productivité, en tenant compte de plusieurs facteurs susceptibles d'être associés aux performances individuelles et au bien-être.
+
+La problématique générale est la suivante :
+
+**Dans quelle mesure les habitudes d'utilisation des réseaux sociaux et des écrans sont-elles associées à la productivité, au stress et au bien-être des individus, et dans quelle mesure ces associations varient-elles selon les caractéristiques personnelles et professionnelles ?**
+
+Pour répondre à cette question, plusieurs objectifs spécifiques sont retenus :
+
+1. **Décrire les comportements numériques** des individus, notamment le temps quotidien consacré aux réseaux sociaux, le nombre de notifications reçues et le temps d'écran avant le coucher.
+2. **Examiner les relations entre les habitudes numériques et le bien-être**, à travers le niveau de stress, la durée du sommeil, la satisfaction professionnelle et les jours de burnout déclarés.
+3. **Évaluer le rôle potentiel de facteurs complémentaires**, tels que le nombre d'heures travaillées, les pauses, l'utilisation d'applications de concentration et les outils de bien-être numérique.
+4. **Construire des modèles statistiques multivariés** afin d'examiner si certaines associations persistent après la prise en compte d'autres variables observées.
+
+## Présentation du jeu de données
+
+L'étude repose sur un jeu de données comportant 30 000 observations, accessible à l'adresse suivante : https://www.kaggle.com/datasets/mahdimashayekhi/social-media-vs-productivity 
+
+Selon la description disponible, les données sont simulées et visent à représenter une diversité de profils individuels, d'habitudes numériques et de situations professionnelles. Elles ne doivent donc pas être considérées, sans vérification supplémentaire, comme un échantillon représentatif de la population réelle.
+
+Cette caractéristique est importante pour l'interprétation des résultats : l'analyse permettra d'identifier des associations et des structures statistiques présentes dans les données simulées, mais ne suffira pas à établir des conclusions causales ou à généraliser directement les résultats à l'ensemble de la population.
+
+Avant toute modélisation, une exploration de la structure du jeu de données sera réalisée. Elle portera notamment sur les types de variables, les valeurs manquantes, les éventuelles valeurs aberrantes, les distributions statistiques et la cohérence des observations.
+
+## Description des variables
+
+Le jeu de données contient des variables relatives aux caractéristiques individuelles, aux habitudes numériques, à l'organisation du travail, à la productivité et au bien-être.
+
+- **`age`** : âge de l'individu, compris théoriquement entre 18 et 65 ans.
+- **`gender`** : genre déclaré de l'individu (homme, femme ou autre).
+- **`job_type`** : secteur ou statut professionnel (informatique, éducation, étudiant, etc.).
+- **`daily_social_media_time`** : temps moyen quotidien consacré aux réseaux sociaux, exprimé en heures.
+- **`social_platform_preference`** : plateforme sociale principalement utilisée (Instagram, TikTok, Telegram, etc.).
+- **`number_of_notifications`** : nombre de notifications reçues quotidiennement sur le téléphone et les réseaux sociaux.
+- **`work_hours_per_day`** : nombre moyen d'heures travaillées par jour.
+- **`perceived_productivity_score`** : score de productivité perçue, sur une échelle de 0 à 10.
+- **`actual_productivity_score`** : score de productivité réelle simulée, sur une échelle de 0 à 10.
+- **`stress_level`** : niveau de stress déclaré, sur une échelle de 1 à 10.
+- **`sleep_hours`** : durée moyenne du sommeil par nuit, exprimée en heures.
+- **`screen_time_before_sleep`** : temps passé devant un écran avant le coucher, exprimé en heures.
+- **`breaks_during_work`** : nombre de pauses prises pendant la période de travail.
+- **`uses_focus_apps`** : indicateur précisant si l'individu utilise des applications de concentration.
+- **`has_digital_wellbeing_enabled`** : indicateur précisant si les outils de bien-être numérique sont activés.
+- **`coffee_consumption_per_day`** : nombre de tasses de café consommées quotidiennement.
+- **`days_feeling_burnout_per_month`** : nombre de jours par mois durant lesquels l'individu déclare ressentir un épuisement professionnel.
+- **`weekly_offline_hours`** : nombre d'heures passées hors ligne par semaine, hors sommeil.
+- **`job_satisfaction_score`** : score de satisfaction professionnelle, sur une échelle de 0 à 10.
